@@ -1,5 +1,6 @@
 #include <QProcess>
 #include <QDebug>
+#include <QtQml>
 
 /**
  * @brief Simple Wrapper around QProcess for QML usage
@@ -16,6 +17,11 @@ public:
         connect(m_process, SIGNAL(finished(int)), this, SIGNAL(finished(int)));
         connect(m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(emitStandardOutput()));
         connect(m_process, SIGNAL(readyReadStandardError()), this, SLOT(emitStandardError()));
+    }
+
+    static void registerQmlType(const char *uri = "Native", int majorVersion = 1, int minorVersion = 0) {
+        // @uri Native
+        qmlRegisterType<Process>(uri, majorVersion, minorVersion, "Process");
     }
 
 private slots:
@@ -38,4 +44,5 @@ signals:
 
 private:
     QProcess *m_process;
+
 };
