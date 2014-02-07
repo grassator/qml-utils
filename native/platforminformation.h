@@ -2,7 +2,7 @@
 #define PLATFORMINFORMATION_H
 
 #include <QObject>
-#include <QtQuick>
+#include <QtQml>
 
 class PlatformInformation : public QObject
 {
