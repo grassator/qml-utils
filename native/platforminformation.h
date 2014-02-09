@@ -10,8 +10,12 @@ class PlatformInformation : public QObject
     Q_PROPERTY (QString name READ name)
 public:
     explicit PlatformInformation(QObject *parent = 0)
-        : QObject(parent), m_platformName("Windows")
+        : QObject(parent)
     {
+#ifdef Q_OS_WIN
+        m_platformName = "Windows";
+#endif
+
 #ifdef Q_OS_OSX
         m_platformName = "OSX";
 #endif
