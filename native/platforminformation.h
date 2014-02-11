@@ -18,10 +18,9 @@ public:
 
 #ifdef Q_OS_OSX
         m_platformName = "OSX";
-#else
-#ifdef Q_OS_UNIX
-        m_platformName = "Linux";
 #endif
+#ifdef Q_OS_LINUX
+        m_platformName = "Linux";
 #endif
     }
 
