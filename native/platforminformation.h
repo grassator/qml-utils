@@ -7,7 +7,7 @@
 class PlatformInformation : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY (QString name READ name)
+    Q_PROPERTY (QString name READ name NOTIFY nameChanged)
 public:
     explicit PlatformInformation(QObject *parent = 0)
         : QObject(parent), m_platformName("unknown")
@@ -42,6 +42,9 @@ public:
                                                       "Platform",
                                                       platformInformationProvider);
     }
+
+signals:
+    void nameChanged();
 
 private:
     QString m_platformName;
