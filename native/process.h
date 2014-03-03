@@ -10,6 +10,13 @@ class Process : public QObject
     Q_OBJECT
 
 public:
+
+    enum ProcessState {
+        NotRunning, Starting, Running
+    };
+
+    Q_ENUMS(ProcessState)
+
     explicit Process(QObject *parent = NULL) : QObject(parent) {
         m_process = new QProcess(this);
         m_process->setProcessEnvironment(QProcessEnvironment::systemEnvironment());
@@ -18,6 +25,14 @@ public:
         connect(m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(emitStandardOutput()));
         connect(m_process, SIGNAL(readyReadStandardError()), this, SLOT(emitStandardError()));
     }
+
+    ~Process() {
+        if(m_process->state() == QProcess::Running) {
+            kill();
+        }
+    }
+
+    Q_INVOKABLE ProcessState state() { return (ProcessState) m_process->state(); }
 
     static void registerQmlType(const char *uri = "Native", int majorVersion = 1, int minorVersion = 0) {
         // @uri Native
@@ -33,7 +48,10 @@ public slots:
         m_process->start(program, args);
     }
 
-    void kill() { m_process->kill(); }
+    void kill() {
+        m_process->kill();
+        m_process->waitForFinished(-1);
+    }
     void terminate() { m_process->terminate(); }
 
 signals:
